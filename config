@@ -1,0 +1,60 @@
+# European XFEL specific
+
+# CAUTION: Order of directives is /not/ irrelevant!
+
+# Enable hostname canonicalization
+CanonicalizeHostname yes
+
+# Use canonicalization if hostname contains no dot
+CanonicalizeMaxDots 0
+
+# Disable system DNS if canonicalization fails
+CanonicalizeFallbackLocal no
+
+# Domains for canonicalization
+CanonicalDomains desy.de
+
+# use your user name instead of <USER>
+
+Host desy-bastion
+    HostName bastion.desy.de
+    User <USER>
+
+Host max-display
+    HostName max-display.desy.de
+
+Host max-exfl-display
+    HostName max-exfl-display.desy.de
+
+Host gateway
+    HostName exflgateway
+
+Host portal
+    HostName exflst107
+
+Host portal_keycloak
+    HostName exflst107
+    Port 9990
+
+Host max-exfl*.desy.de !max-exfl-display.desy.de
+    ProxyJump desy-bastion
+
+Host git.xfel.eu
+    User git
+    Port 10022
+    ForwardX11 no
+
+Host *.desy.de *.xfel.eu
+    User <USER>
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+    PasswordAuthentication no
+    ForwardX11 yes
+
+# Office network jump, either bastion, max-display or max-exfl-display
+Host max-*.desy.de *.xfel.eu exfl*.desy.de !max-exfl-display.desy.de
+    user <USER>
+    ProxyJump desy-bastion
+
+# one need to have a kerberos ticket to use this config
+# use: kinit -A -f <USER>@DESY.DE
