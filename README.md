@@ -88,6 +88,40 @@ keycloak-12.0.4/bin$ ./standalone.sh  # check if it works
 keycloak-12.0.4/bin$ ./add-user.sh    # add the admin user
 ```
 
+A Keycloak user in the Management Realm (= admin) can be added either via the Keycloak web-interface (localhost 8080 port, see below) in the Administration Console (leftmost panel) or from the command line with ``add-user.sh``, like so:
+
+```
+What type of user do you wish to add?
+ a) Management User (mgmt-users.properties)
+ b) Application User (application-users.properties)
+(a):
+
+Enter the details of the new user to add.
+Using realm 'ManagementRealm' as discovered from the existing property files.
+Username : panosc
+Password recommendations are listed below. To modify these restrictions edit the add-user.properties configuration file.
+ - The password should be different from the username
+ - The password should not be one of the following restricted values {root, admin, administrator}
+ - The password should contain at least 8 characters, 1 alphabetic character(s), 1 digit(s), 1 non-alphanumeric symbol(s)
+Password :
+WFLYDM0101: Password should have at least 1 digit.
+Are you sure you want to use the password entered yes/no? yes
+Re-enter Password :
+What groups do you want this user to belong to? (Please enter a comma separated list, or leave blank for none)[  ]:
+About to add user 'panosc' for realm 'ManagementRealm'
+Is this correct yes/no? yes
+Added user 'panosc' to file '/scratch/panosc-dev/keycloak-12.0.4/standalone/configuration/mgmt-users.properties'
+Added user 'panosc' to file '/scratch/panosc-dev/keycloak-12.0.4/domain/configuration/mgmt-users.properties'
+Added user 'panosc' with groups  to file '/scratch/panosc-dev/keycloak-12.0.4/standalone/configuration/mgmt-groups.properties'
+Added user 'panosc' with groups  to file '/scratch/panosc-dev/keycloak-12.0.4/domain/configuration/mgmt-groups.properties'
+Is this new user going to be used for one AS process to connect to another AS process?
+e.g. for a slave host controller connecting to the master or for a Remoting connection for server to server EJB calls.
+yes/no? no
+
+```
+
+Only after an admin user (named "panosc" here) has been created by either method, we login to the HAL management console (localhost, port 9990) with exactly these admin credentials and do the following steps with panosc realm etc.
+
 (a) keycloak - <HAL MANAGEMENT PASSWORD>  
 http://127.0.0.1:9990  # HAL Management Console  
 http://127.0.0.1:8080  # Keycloak (create new keycloak admin user+pass when first connected)
