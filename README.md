@@ -11,7 +11,7 @@ We need to install the following software:
 * portal microservices
 * RemoteDesktop / Jupyter instances
 
-https://github.com/panosc-portal/helm-charts/tree/master/panosc-portal-demo
+https://github.com/panosc-portal/helm-charts/tree/master/panosc-portal-demo  
 https://confluence.panosc.eu/pages/viewpage.action?pageId=10879127
 
 Please follow the instructions line by line!
@@ -88,8 +88,8 @@ keycloak-12.0.4/bin$ ./standalone.sh  # check if it works
 keycloak-12.0.4/bin$ ./add-user.sh    # add the admin user
 ```
 
-(a) keycloak - <HAL MANAGEMENT PASSWORD>
-http://127.0.0.1:9990  # HAL Management Console
+(a) keycloak - <HAL MANAGEMENT PASSWORD>  
+http://127.0.0.1:9990  # HAL Management Console  
 http://127.0.0.1:8080  # Keycloak (create new keycloak admin user+pass when first connected)
 
 on Keycloak Admin console:
