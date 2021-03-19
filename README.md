@@ -72,7 +72,11 @@ Clean up:
 kubectl delete service hello-minikube
 kubectl delete deployment hello-minikube
 ```
-kubectl cluster-info     #provides the IP of <Yourk8sMaster>
+Check the output of the command:
+
+`kubectl cluster-info`
+
+The IP-address it provides will be later referred as `Yourk8sMaster`.
 
 Keycloak
 =========
@@ -208,7 +212,7 @@ helm install <YourReleaseName> panosc-portal/panosc-portal-demo \
 eg:
 ```bash
 helm install panosc-portal panosc-portal/panosc-portal-demo \
---set global.kubernetesMasterHostname=192.168.99.100 \
+--set global.kubernetesMasterHostname=192.168.49.2 \
 --set account-service.idp.url=http://131.169.212.94:8090/auth/realms/panosc/.well-known/openid-configuration \
 --set account-service.idp.clientId=PanoscPortal \
 --set account-service.idp.loginField=preferred_username \

@@ -32,9 +32,20 @@ Host gateway
 Host portal
     HostName exflst107
 
-Host portal_keycloak
-    HostName exflst107
-    Port 9990
+Host all-ports-for-portal
+    Hostname exflst107
+    # portal: 300
+    LocalForward 3000 localhost:3000
+    LocalForward 3001 localhost:3001
+    LocalForward 3002 localhost:3002
+    LocalForward 5001 localhost:5001
+    # Keycloak: 8080, 8090
+    LocalForward 8080 localhost:8080
+    LocalForward 8090 localhost:8090
+    # HAL Management Console:
+    LocalForward 9990 localhost:9990
+    # Kubernetes dashboard (changes every time)
+    LocalForward 43482 localhost:43482
 
 Host max-exfl*.desy.de !max-exfl-display.desy.de
     ProxyJump desy-bastion
