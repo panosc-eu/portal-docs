@@ -134,12 +134,12 @@ on Keycloak Admin console:
 * New realm: panosc  
 
 In panosc realm:  
-* new user: <USERNAME>
+* new user: ``<USERNAME>``
 
 Concretely:  
 Users -> Add user -> panosc_keycloak : panosc_pwd
 
-user <USERNAME>:  
+user ``<USERNAME>``:  
 * EmailVerification:off (to have immediately a fully enabled account)
 * user credentials: set password <USERPASSWORD>
 * temporary:off (to have immediately a fully enabled account)
