@@ -131,24 +131,39 @@ http://127.0.0.1:9990  # HAL Management Console
 http://127.0.0.1:8080  # Keycloak (create new keycloak admin user+pass when first connected)
 
 on Keycloak Admin console:
-New realm: panosc
-In panosc realm, new user: <USERNAME>
+* New realm: panosc  
 
+In panosc realm:  
+* new user: <USERNAME>
+
+Concretely:  
 Users -> Add user -> panosc_keycloak : panosc_pwd
 
-user <USERNAME>: EmailVerification:off (to have immediately a fully enabled account)
-user credentials: set password <USERPASSWORD>  temporary:off (to have immediately a fully enabled account)
-new client: <CLIENT_ID>
-new client scope: openid
+user <USERNAME>:
+* EmailVerification:off (to have immediately a fully enabled account)
+* user credentials: set password <USERPASSWORD>
+* temporary:off (to have immediately a fully enabled account)
+
+* new client: <CLIENT_ID>
+* new client scope: openid
 add openid as optional client scope to client <CLIENT_ID> 
 
 Clients -> Client Scopes -> Optional Client Scopes: button: Add selected
+
+Concretely:
+CLIENT_ID = panosc_portal
+
 
 testing keycloak
 ----------------
 https://www.appsdeveloperblog.com/keycloak-client-credentials-grant-example/
 
 curl --location --request POST 'http://localhost:8080/auth/realms/panosc/protocol/openid-connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=<CLIENT_ID>' --data-urlencode 'scope=openid' --data-urlencode 'grant_type=password' --data-urlencode 'username=<USERNAME>' --data-urlencode 'password=<USERPASSWORD>'
+
+Concretely:
+curl --location --request POST 'http://localhost:8080/auth/realms/panosc/protocol/openid-connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=panosc_portal' --data-urlencode 'scope=openid' --data-urlencode 'grant_type=password' --data-urlencode 'username=panosc_keycloak' --data-urlencode 'password=panosc_pwd'
+
+
 
 mapping to "external" port 8090
 -------------------------------
