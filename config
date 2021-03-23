@@ -31,6 +31,7 @@ Host gateway
 
 Host portal
     HostName exflst107
+    User root
 
 Host all-ports-for-portal
     Hostname exflst107
