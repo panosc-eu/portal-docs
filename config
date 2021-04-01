@@ -40,13 +40,15 @@ Host all-ports-for-portal
     LocalForward 3001 localhost:3001
     LocalForward 3002 localhost:3002
     LocalForward 5001 localhost:5001
+    # Kubernetes dashboard,
+    # it is provided via `minikube dashboard&; kubectl proxy` then
+    # http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/
+    LocalForward 8001 localhost:8001
     # Keycloak: 8080, 8090
     LocalForward 8080 localhost:8080
     LocalForward 8090 localhost:8090
     # HAL Management Console:
     LocalForward 9990 localhost:9990
-    # Kubernetes dashboard (changes every time)
-    LocalForward 43482 localhost:43482
 
 Host max-exfl*.desy.de !max-exfl-display.desy.de
     ProxyJump desy-bastion
