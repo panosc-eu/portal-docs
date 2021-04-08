@@ -78,6 +78,8 @@ Check the output of the command:
 
 The IP-address it provides will be later referred as `Yourk8sMaster`.
 
+Just IP-address is easier to get with `minicube ip`
+
 Keycloak
 =========
 Install Keycloak
@@ -85,7 +87,7 @@ See https://www.keycloak.org/docs/latest/server_installation/#installation
 
 - distribution files  (localhost installation)
 --------------------
-https://www.keycloak.org/downloads         #'keycloak-12.0.1.[zip|tar.gz]'
+https://www.keycloak.org/downloads         #'keycloak-12.0.4.[zip|tar.gz]'
 ```bash
 tar xvzf keycloak-12.0.4.tar.gz 
 keycloak-12.0.4/bin$ ./standalone.sh  # check if it works
