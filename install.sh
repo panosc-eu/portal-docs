@@ -28,10 +28,6 @@ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/
 sudo apt-get update --allow-insecure-repositories
 sudo apt-get install -y --allow-unauthenticated kubectl
 
-
-# tzdata:
-sudo ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
 # Java:
 sudo apt-get install -y default-jre-headless
 
