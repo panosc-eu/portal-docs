@@ -9,34 +9,53 @@ else [ -f '/etc/redhat-release' ]
 fi
 
 CUBE_NAMESPACE="panosc-portal"
-
+# Keycloack
+KC_REALM='Panosc'
+KC_USERNAME='kc_user'
+KC_CLIENT_ID='panosc-portal'
+# Helm
+HELM_RELEASE='panosc-portal'
 
 # TODO: if Ubuntu/Debian
 
 # helm
+echo "\nInstall Helm:"
 curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
-sudo apt-get install apt-transport-https --yes
+sudo apt-get install -y apt-transport-https ca-certificates gnupg lsb-release
 echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 sudo apt-get update --allow-insecure-repositories
-sudo apt-get install -y helm
+sudo apt-get install --allow-unauthenticated -y helm
 
-# minikube
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
-sudo dpkg -i minikube_latest_amd64.deb
 
-#
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-# TODO: if ubuntu
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update --allow-insecure-repositories
-sudo apt-get install -y --allow-unauthenticated kubectl
+
+# Docker machinery
+echo "\nInstall Docker machinery:"
+if [ $DISTRO == 'ubuntu' ]; then
+  echo "\nInstall Docker from docker.com"
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get update
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+  sudo usermod -aG docker $USER
+
+  echo "\nInstall kubectl from google services:"
+  sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  sudo apt-get update
+  sudo apt-get install -y kubectl
+
+  echo "\nInstall minikube"
+  curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+  sudo dpkg -i minikube_latest_amd64.deb
+fi
 
 # Java:
 sudo apt-get install -y default-jre-headless
 
-
 # keycloak
-KEYCLOAK_VER="12.0.4"
+KEYCLOAK_VER="13.0.1"
 KEYCLOAK="keycloak-$KEYCLOAK_VER"
 echo "Downloading $KEYCLOAK:"
 curl -LO "https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VER/$KEYCLOAK.tar.gz"
@@ -47,7 +66,9 @@ tar xvzf "$KEYCLOAK.tar.gz"
 #./$KEYCLOAK/bin$ ./standalone.sh
 
 
-sudo apt-get install -y socat git
+#sudo apt-get install -y socat git
+socat tcp-listen:8090,reuseaddr,fork tcp:localhost:8080 &
+
 
 # Install the portal components
 git clone https://github.com/panosc-portal/api-service-client-cli
@@ -75,7 +96,12 @@ helm repo update
 
 kubectl create namespace $CUBE_NAMESPACE
 # TODO: install helm components:
-
+helm install $HELM_RELEASE panosc-portal/panosc-portal-demo \
+--set global.kubernetesMasterHostname=<Yourk8sMaster> \
+--set account-service.idp.url=<YourOpenIDDiscoveryEndpoint> \      #<KEYCLOAK_EXTERNAL_IP>
+--set account-service.idp.clientId=<YourClientID> \
+--set account-service.idp.loginField=<YourLoginField> \
+-n $CUBE_NAMESPACE
 
 # Install Node
 if [ $DISTRO == 'ubuntu' ]; then
@@ -91,5 +117,5 @@ fi
 
 ### account-service-client-cli
 # Go to the `api-service-client-cli` repo and install Node components:
-cd api-service-client-cli
-npm install && npm audit fix
+#cd api-service-client-cli
+#npm install && npm audit fix
